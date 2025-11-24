@@ -1,36 +1,162 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TabDrop 🚀
 
-## Getting Started
+**Share browser tabs instantly.** Drop links, sync in real-time, and launch them all at once.
 
-First, run the development server:
+TabDrop is a URL-based browser tab sharing application inspired by Dontpad.com. Simply navigate to any URL like `tabdrop.com/your-name`, drop your browser tabs, and share the collection with anyone. Perfect for research projects, team collaboration, reading lists, and daily workflows.
+
+## ✨ Features
+
+- 🎯 **URL-Based Collections** - No sign-up required, just navigate to any slug
+- 🖱️ **Drag & Drop** - Drop browser tabs directly onto the page
+- 📱 **Mobile-Friendly** - Manual URL input for devices that don't support drag-and-drop
+- ⚡ **Real-Time Sync** - Changes sync instantly across all devices viewing the same collection
+- 🚀 **Bulk Launcher** - Open all saved tabs at once with a single click
+- 🎨 **Clean UI** - Modern design with dark mode support
+- 🔓 **Public & Collaborative** - Anyone with the URL can view, add, or remove links
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 14+ (App Router)
+- **Language**: TypeScript (Strict mode)
+- **Styling**: Tailwind CSS 4
+- **Icons**: Lucide React
+- **Backend/Database**: Supabase (PostgreSQL + Realtime)
+
+## 🚀 Quick Start
+
+### 1. Install Dependencies
+
+
+```bash
+npm install
+```
+
+### 2. Set Up Supabase
+
+1. Create a free account at [supabase.com](https://supabase.com)
+2. Create a new project
+3. Run the SQL from `supabase-schema.sql` in the SQL Editor
+4. Enable Realtime for the `collections` table (Database → Replication)
+
+### 3. Configure Environment Variables
+
+Create a `.env.local` file in the root directory:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_PUB_KEY=your_supabase_pub_key
+```
+
+Get these values from your Supabase dashboard (Settings → API).
+
+### 4. Run the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the app in action!
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📖 How It Works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Create a Collection** - Navigate to `/your-collection-name` or generate a random slug
+2. **Drop Your Tabs** - Drag browser tabs onto the drop zone or paste URLs manually
+3. **Share & Sync** - Share the URL with others; changes sync in real-time
+4. **Launch All** - Click "Open All Tabs" to open every link at once
 
-## Learn More
+## 📁 Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+tabdrop/
+├── app/
+│   ├── [slug]/
+│   │   ├── page.tsx          # Main collection page (drag & drop)
+│   │   └── open/
+│   │       └── page.tsx      # Tab launcher page
+│   ├── layout.tsx            # Root layout
+│   ├── page.tsx              # Landing page
+│   └── globals.css           # Global styles
+├── lib/
+│   ├── supabaseClient.ts     # Supabase client configuration
+│   ├── types.ts              # TypeScript type definitions
+│   └── utils.ts              # Utility functions (URL validation, etc.)
+├── supabase-schema.sql       # Database schema
+└── SETUP.md                  # Detailed setup instructions
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🔒 Security Notes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+⚠️ **Important**: TabDrop is designed for public, collaborative use (similar to dontpad.com):
 
-## Deploy on Vercel
+- Anyone with the collection URL can view, add, or delete links
+- No authentication is required
+- Links are stored in plain text
+- **Do not** share sensitive or private URLs
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+For private collections, you would need to implement Supabase authentication and update the RLS policies.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🚢 Deployment
+
+### Vercel (Recommended)
+
+1. Push your code to GitHub
+2. Import the project in [Vercel](https://vercel.com)
+3. Add environment variables in the Vercel dashboard
+4. Deploy!
+
+### Other Platforms
+
+TabDrop can be deployed to any platform that supports Next.js:
+- Netlify
+- Railway
+- Fly.io
+- AWS Amplify
+
+Make sure to configure environment variables for your Supabase connection.
+
+## 📚 Detailed Setup
+
+See [SETUP.md](./SETUP.md) for detailed setup instructions, troubleshooting, and configuration options.
+
+## 🎯 Use Cases
+
+- **Research Projects** - Collect and organize research links
+- **Team Collaboration** - Share resources with team members
+- **Reading Lists** - Save articles to read later
+- **Daily Workflows** - Quick access to frequently used tools
+- **Event Planning** - Share relevant links with attendees
+- **Learning Resources** - Curate educational content
+
+## 🐛 Troubleshooting
+
+### Pop-ups are blocked
+Allow pop-ups for your TabDrop domain in your browser settings.
+
+### Real-time sync not working
+- Verify Realtime is enabled in Supabase (Database → Replication)
+- Check browser console for connection errors
+
+### Links not saving
+- Verify environment variables are correct
+- Check that the database table was created with proper RLS policies
+- Look for errors in the browser console and Network tab
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to open issues or submit pull requests.
+
+## 📄 License
+
+MIT License - feel free to use this project for personal or commercial purposes.
+
+## 🙏 Acknowledgments
+
+- Inspired by [Dontpad.com](https://dontpad.com)
+- Built with [Next.js](https://nextjs.org)
+- Powered by [Supabase](https://supabase.com)
+- Styled with [Tailwind CSS](https://tailwindcss.com)
+- Icons by [Lucide](https://lucide.dev)
+
+---
+
+**Made with ❤️ for the web**
