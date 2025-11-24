@@ -2,7 +2,7 @@
 
 **Share browser tabs instantly.** Drop links, sync in real-time, and launch them all at once.
 
-TabDrop is a URL-based browser tab sharing application inspired by Dontpad.com. Simply navigate to any URL like `tabdrop.com/your-name`, drop your browser tabs, and share the collection with anyone. Perfect for research projects, team collaboration, reading lists, and daily workflows.
+TabDrop is a URL-based browser tab sharing application inspired by Dontpad.com. Simply navigate to any URL slug, drop your browser tabs, and share the collection with anyone. Perfect for research projects, team collaboration, reading lists, and daily workflows.
 
 ## Features
 
