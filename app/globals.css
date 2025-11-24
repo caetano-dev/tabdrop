@@ -1,26 +1,384 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Base colors - Light Mode */
+  --background: #f8fafc;
+  --background-secondary: #f1f5f9;
+  --foreground: #0f172a;
+  --foreground-secondary: #475569;
+  
+  /* Primary colors */
+  --primary: #1e90ff;
+  --primary-hover: #1e99ff;
+  --primary-light: #eef2ff;
+  
+  /* Surface colors */
+  --surface: #ffffff;
+  --surface-hover: #f1f5f9;
+  --surface-active: #e2e8f0;
+  
+  /* Border colors */
+  --border: #cbd5e1;
+  --border-hover: #94a3b8;
+  
+  /* Status colors */
+  --success: #16a34a;
+  --success-bg: #dcfce7;
+  --success-border: #86efac;
+  
+  --error: #dc2626;
+  --error-bg: #fee2e2;
+  --error-border: #fca5a5;
+  
+  --warning: #ea580c;
+  --warning-bg: #fed7aa;
+  
+  /* Text colors */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #94a3b8;
+  
+  /* Drop zone */
+  --dropzone-border: #cbd5e1;
+  --dropzone-bg: #ffffff;
+  --dropzone-hover-border: #4f46e5;
+  --dropzone-hover-bg: #eef2ff;
+  
+  /* Gradients */
+  --gradient-from: #f8fafc;
+  --gradient-to: #e2e8f0;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Base colors - Dark Mode */
+    --background: #0f172a;
+    --background-secondary: #1e293b;
+    --foreground: #f1f5f9;
+    --foreground-secondary: #cbd5e1;
+    
+    /* Primary colors (Indigo) */
+    --primary: #1e90ff;
+    --primary-hover: #1e99ff;
+    --primary-light: #4338ca;
+    
+    /* Surface colors */
+    --surface: #1e293b;
+    --surface-hover: #334155;
+    --surface-active: #475569;
+    
+    /* Border colors */
+    --border: #475569;
+    --border-hover: #64748b;
+    
+    /* Status colors */
+    --success: #22c55e;
+    --success-bg: #14532d;
+    --success-border: #166534;
+    
+    --error: #ef4444;
+    --error-bg: #7f1d1d;
+    --error-border: #991b1b;
+    
+    --warning: #f97316;
+    --warning-bg: #7c2d12;
+    
+    /* Text colors */
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-tertiary: #64748b;
+    
+    /* Drop zone */
+    --dropzone-border: #475569;
+    --dropzone-bg: rgba(30, 41, 59, 0.5);
+    --dropzone-hover-border: #6366f1;
+    --dropzone-hover-bg: rgba(49, 46, 129, 0.2);
+    
+    /* Gradients */
+    --gradient-from: #0f172a;
+    --gradient-to: #1e293b;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@theme {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Add default margins for better spacing */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 1rem 0;
+}
+
+p {
+  margin: 0 0 1rem 0;
+}
+
+button, input, select, textarea {
+  margin: 0;
+}
+
+/* Ensure proper spacing between sections */
+section {
+  margin-bottom: 2rem;
+}
+
+div {
+  /* Remove default margins but allow utility classes to work */
+  margin: 0;
+}
+
+/* Utility classes */
+.bg-page {
+  background: linear-gradient(to bottom right, var(--gradient-from), var(--gradient-to)) !important;
+  min-height: 100vh;
+}
+
+.bg-surface {
+  background-color: var(--surface) !important;
+}
+
+.bg-surface-hover {
+  background-color: var(--surface-hover) !important;
+}
+
+.bg-surface-active {
+  background-color: var(--surface-active) !important;
+}
+
+.text-heading {
+  color: var(--text-primary) !important;
+}
+
+.text-body {
+  color: var(--text-secondary) !important;
+}
+
+.text-muted {
+  color: var(--text-tertiary) !important;
+}
+
+.text-brand {
+  color: var(--primary) !important;
+}
+
+.border-base {
+  border-color: var(--border) !important;
+}
+
+.btn-primary {
+  background-color: var(--primary) !important;
+  color: white !important;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--primary-hover) !important;
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dropzone {
+  border-color: var(--dropzone-border) !important;
+  background-color: var(--dropzone-bg) !important;
+}
+
+.dropzone-active {
+  border-color: var(--dropzone-hover-border) !important;
+  background-color: var(--dropzone-hover-bg) !important;
+}
+
+.card {
+  background-color: var(--surface) !important;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.link-primary {
+  color: var(--primary) !important;
+  text-decoration: none;
+}
+
+.link-primary:hover {
+  text-decoration: underline;
+}
+
+/* Status styles */
+.status-success {
+  background-color: var(--success-bg) !important;
+  border-color: var(--success-border) !important;
+  color: var(--success) !important;
+}
+
+.status-error {
+  background-color: var(--error-bg) !important;
+  border-color: var(--error-border) !important;
+  color: var(--error) !important;
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/* Selection styles */
+::selection {
+  background-color: var(--primary-light);
+  color: var(--text-primary);
+}
+
+/* Link reset */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Input styles */
+input, textarea {
+  color: var(--text-primary);
+  background-color: var(--surface);
+  border-color: var(--border);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text-tertiary);
+}
+
+input:focus, textarea:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
+/* Additional spacing utilities */
+.space-y-2 > * + * {
+  margin-top: 0.5rem;
+}
+
+.space-y-3 > * + * {
+  margin-top: 0.75rem;
+}
+
+.space-y-4 > * + * {
+  margin-top: 1rem;
+}
+
+.space-y-6 > * + * {
+  margin-top: 1.5rem;
+}
+
+.space-y-8 > * + * {
+  margin-top: 2rem;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-3 {
+  gap: 0.75rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.gap-6 {
+  gap: 1.5rem;
+}
+
+.gap-8 {
+  gap: 2rem;
+}
+
+/* Margin utilities */
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 0.75rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.mb-8 { margin-bottom: 2rem; }
+.mb-16 { margin-bottom: 4rem; }
+
+.mt-2 { margin-top: 0.5rem; }
+.mt-4 { margin-top: 1rem; }
+.mt-8 { margin-top: 2rem; }
+.mt-16 { margin-top: 4rem; }
+
+.mx-auto { 
+  margin-left: auto; 
+  margin-right: auto; 
+}
+
+.my-4 { 
+  margin-top: 1rem; 
+  margin-bottom: 1rem; 
+}
+
+.my-8 { 
+  margin-top: 2rem; 
+  margin-bottom: 2rem; 
+}
+
+/* Padding utilities */
+.p-2 { padding: 0.5rem; }
+.p-4 { padding: 1rem; }
+.p-6 { padding: 1.5rem; }
+.p-8 { padding: 2rem; }
+.p-12 { padding: 3rem; }
+
+.px-4 { 
+  padding-left: 1rem; 
+  padding-right: 1rem; 
+}
+
+.px-6 { 
+  padding-left: 1.5rem; 
+  padding-right: 1.5rem; 
+}
+
+.px-8 { 
+  padding-left: 2rem; 
+  padding-right: 2rem; 
+}
+
+.py-2 { 
+  padding-top: 0.5rem; 
+  padding-bottom: 0.5rem; 
+}
+
+.py-4 { 
+  padding-top: 1rem; 
+  padding-bottom: 1rem; 
+}
+
+.py-8 { 
+  padding-top: 2rem; 
+  padding-bottom: 2rem; 
+}
+
+.py-16 { 
+  padding-top: 4rem; 
+  padding-bottom: 4rem; 
+}
+
+.pt-8 { padding-top: 2rem; }

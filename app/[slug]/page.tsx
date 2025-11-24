@@ -72,6 +72,7 @@ export default function SlugPage() {
     };
   }, [slug, fetchLinks]);
 
+  // Upsert links to database
   const persistLinks = async (updatedLinks: SavedLink[]) => {
     try {
       const { error } = await supabase
@@ -100,12 +101,14 @@ export default function SlugPage() {
     }
   };
 
+  // Add a new link
   const addLink = async (url: string) => {
     if (!isValidUrl(url)) {
       setError('Invalid URL. Please enter a valid http:// or https:// URL');
       return;
     }
 
+    // Check for duplicates
     if (links.some(link => link.url === url)) {
       setError('This link already exists in your collection');
       return;
@@ -116,12 +119,14 @@ export default function SlugPage() {
       addedAt: new Date().toISOString(),
     };
 
+    // Optimistic update
     const updatedLinks = [...links, newLink];
     setLinks(updatedLinks);
     setError(null);
     setSuccessMessage('Link added successfully!');
     setTimeout(() => setSuccessMessage(null), 3000);
 
+    // Persist to database
     await persistLinks(updatedLinks);
   };
 
@@ -173,33 +178,33 @@ export default function SlugPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-        <div className="text-slate-600 dark:text-slate-400">Loading...</div>
+      <div className="flex min-h-screen items-center justify-center" style={{ background: 'linear-gradient(to bottom right, var(--gradient-from), var(--gradient-to))' }}>
+        <div style={{ color: 'var(--text-secondary)' }}>Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 py-8 px-4">
+    <div className="min-h-screen py-8 px-4" style={{ background: 'linear-gradient(to bottom right, var(--gradient-from), var(--gradient-to))' }}>
       <div className="mx-auto max-w-4xl">
         {/* Header */}
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-50 mb-2">
+          <h1 className="text-4xl font-bold mb-2" style={{ color: 'var(--primary)' }}>
             TabDrop
           </h1>
-          <p className="text-lg text-slate-600 dark:text-slate-400">
-            Collection: <span className="font-mono font-semibold text-indigo-600 dark:text-indigo-400">/{slug}</span>
+          <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>
+            Collection: <span className="font-mono font-semibold" style={{ color: 'var(--primary)' }}>/{slug}</span>
           </p>
         </div>
 
         {/* Error/Success Messages */}
         {error && (
-          <div className="mb-4 p-4 bg-red-100 border border-red-300 text-red-800 rounded-lg dark:bg-red-900/30 dark:border-red-700 dark:text-red-200">
+          <div className="mb-4 p-4 border rounded-lg" style={{ backgroundColor: 'var(--error-bg)', borderColor: 'var(--error-border)', color: 'var(--error)' }}>
             {error}
           </div>
         )}
         {successMessage && (
-          <div className="mb-4 p-4 bg-green-100 border border-green-300 text-green-800 rounded-lg dark:bg-green-900/30 dark:border-green-700 dark:text-green-200">
+          <div className="mb-4 p-4 border rounded-lg" style={{ backgroundColor: 'var(--success-bg)', borderColor: 'var(--success-border)', color: 'var(--success)' }}>
             {successMessage}
           </div>
         )}
@@ -210,17 +215,19 @@ export default function SlugPage() {
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           className={`mb-8 p-12 border-4 border-dashed rounded-2xl transition-all ${
-            isDragOver
-              ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 scale-105'
-              : 'border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800/50'
+            isDragOver ? 'scale-105' : ''
           }`}
+          style={{
+            borderColor: isDragOver ? 'var(--dropzone-hover-border)' : 'var(--dropzone-border)',
+            backgroundColor: isDragOver ? 'var(--dropzone-hover-bg)' : 'var(--dropzone-bg)',
+          }}
         >
           <div className="text-center">
-            <LinkIcon className="mx-auto mb-4 h-16 w-16 text-slate-400 dark:text-slate-500" />
-            <h2 className="text-2xl font-semibold text-slate-800 dark:text-slate-200 mb-2">
+            <LinkIcon className="mx-auto mb-4 h-16 w-16" style={{ color: 'var(--text-tertiary)' }} />
+            <h2 className="text-2xl font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
               Drop Links Here
             </h2>
-            <p className="text-slate-600 dark:text-slate-400 mb-6">
+            <p className="mb-6" style={{ color: 'var(--text-secondary)' }}>
               Drag and drop browser tabs or links onto this area
             </p>
 
@@ -232,11 +239,19 @@ export default function SlugPage() {
                   value={manualUrl}
                   onChange={(e) => setManualUrl(e.target.value)}
                   placeholder="Or paste a URL here..."
-                  className="flex-1 px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2"
+                  style={{
+                    backgroundColor: 'var(--surface)',
+                    color: 'var(--text-primary)',
+                    borderColor: 'var(--border)',
+                  }}
                 />
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2"
+                  className="px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+                  style={{ backgroundColor: 'var(--primary)', color: 'white' }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--primary-hover)'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--primary)'}
                 >
                   <Plus className="h-5 w-5" />
                   Add
@@ -247,15 +262,18 @@ export default function SlugPage() {
         </div>
 
         {/* Links List */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 mb-6">
+        <div className="rounded-xl shadow-lg p-6 mb-6" style={{ backgroundColor: 'var(--surface)' }}>
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200">
+            <h3 className="text-xl font-semibold" style={{ color: 'var(--text-primary)' }}>
               Saved Links ({links.length})
             </h3>
             {links.length > 0 && (
               <button
                 onClick={() => router.push(`/${slug}/open`)}
-                className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2"
+                className="px-6 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+                style={{ backgroundColor: 'var(--primary)', color: 'white' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--primary-hover)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--primary)'}
               >
                 <Rocket className="h-5 w-5" />
                 Open All Tabs
@@ -264,7 +282,7 @@ export default function SlugPage() {
           </div>
 
           {links.length === 0 ? (
-            <div className="text-center py-12 text-slate-500 dark:text-slate-400">
+            <div className="text-center py-12" style={{ color: 'var(--text-secondary)' }}>
               <LinkIcon className="mx-auto mb-3 h-12 w-12 opacity-50" />
               <p>No links yet. Start by dropping or adding a link above!</p>
             </div>
@@ -273,13 +291,16 @@ export default function SlugPage() {
               {links.map((link, index) => (
                 <div
                   key={`${link.url}-${index}`}
-                  className="flex items-center gap-3 p-4 bg-slate-50 dark:bg-slate-900/50 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors group"
+                  className="flex items-center gap-3 p-4 rounded-lg transition-colors group"
+                  style={{ backgroundColor: 'var(--surface-hover)' }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--surface-active)'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--surface-hover)'}
                 >
                   {/* Favicon */}
                   <img
                     src={getFaviconUrl(link.url)}
                     alt=""
-                    className="w-6 h-6 flex-shrink-0"
+                    className="w-6 h-6 shrink-0"
                     onError={(e) => {
                       (e.target as HTMLImageElement).style.display = 'none';
                     }}
@@ -291,11 +312,12 @@ export default function SlugPage() {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-indigo-600 dark:text-indigo-400 hover:underline font-medium truncate block"
+                      className="font-medium truncate block hover:underline"
+                      style={{ color: 'var(--primary)' }}
                     >
                       {formatUrlForDisplay(link.url)}
                     </a>
-                    <p className="text-xs text-slate-500 dark:text-slate-500">
+                    <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
                       Added {new Date(link.addedAt).toLocaleString()}
                     </p>
                   </div>
@@ -306,14 +328,20 @@ export default function SlugPage() {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                      className="p-2 transition-colors"
+                      style={{ color: 'var(--text-secondary)' }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = 'var(--primary)'}
+                      onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
                       title="Open in new tab"
                     >
                       <ExternalLink className="h-5 w-5" />
                     </a>
                     <button
                       onClick={() => deleteLink(index)}
-                      className="p-2 text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                      className="p-2 transition-colors"
+                      style={{ color: 'var(--text-secondary)' }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = 'var(--error)'}
+                      onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
                       title="Delete link"
                     >
                       <Trash2 className="h-5 w-5" />
@@ -326,7 +354,7 @@ export default function SlugPage() {
         </div>
 
         {/* Footer Info */}
-        <div className="text-center text-sm text-slate-500 dark:text-slate-400">
+        <div className="text-center text-sm" style={{ color: 'var(--text-secondary)' }}>
           <p>
             Share this page&apos;s URL with others to collaborate on the same collection.
           </p>

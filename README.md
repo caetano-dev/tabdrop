@@ -1,20 +1,20 @@
-# TabDrop 🚀
+# TabDrop
 
 **Share browser tabs instantly.** Drop links, sync in real-time, and launch them all at once.
 
 TabDrop is a URL-based browser tab sharing application inspired by Dontpad.com. Simply navigate to any URL like `tabdrop.com/your-name`, drop your browser tabs, and share the collection with anyone. Perfect for research projects, team collaboration, reading lists, and daily workflows.
 
-## ✨ Features
+## Features
 
-- 🎯 **URL-Based Collections** - No sign-up required, just navigate to any slug
-- 🖱️ **Drag & Drop** - Drop browser tabs directly onto the page
-- 📱 **Mobile-Friendly** - Manual URL input for devices that don't support drag-and-drop
-- ⚡ **Real-Time Sync** - Changes sync instantly across all devices viewing the same collection
-- 🚀 **Bulk Launcher** - Open all saved tabs at once with a single click
-- 🎨 **Clean UI** - Modern design with dark mode support
-- 🔓 **Public & Collaborative** - Anyone with the URL can view, add, or remove links
+- **URL-Based Collections** - No sign-up required, just navigate to any slug
+- **Drag & Drop** - Drop browser tabs directly onto the page
+- **Mobile-Friendly** - Manual URL input for devices that don't support drag-and-drop
+- **Real-Time Sync** - Changes sync instantly across all devices viewing the same collection
+- **Bulk Launcher** - Open all saved tabs at once with a single click
+- **Clean UI** - Modern design with dark mode support
+- **Public & Collaborative** - Anyone with the URL can view, add, or remove links
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework**: Next.js 14+ (App Router)
 - **Language**: TypeScript (Strict mode)
@@ -22,10 +22,9 @@ TabDrop is a URL-based browser tab sharing application inspired by Dontpad.com. 
 - **Icons**: Lucide React
 - **Backend/Database**: Supabase (PostgreSQL + Realtime)
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Install Dependencies
-
 
 ```bash
 npm install
@@ -44,7 +43,7 @@ Create a `.env.local` file in the root directory:
 
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_PUB_KEY=your_supabase_pub_key
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
 Get these values from your Supabase dashboard (Settings → API).
@@ -57,45 +56,23 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to see the app in action!
 
-## 📖 How It Works
+## How It Works
 
-1. **Create a Collection** - Navigate to `/your-collection-name` or generate a random slug
+1. **Create a Collection** - Navigate to `/your-collection-name`
 2. **Drop Your Tabs** - Drag browser tabs onto the drop zone or paste URLs manually
 3. **Share & Sync** - Share the URL with others; changes sync in real-time
 4. **Launch All** - Click "Open All Tabs" to open every link at once
 
-## 📁 Project Structure
+## Security Notes
 
-```
-tabdrop/
-├── app/
-│   ├── [slug]/
-│   │   ├── page.tsx          # Main collection page (drag & drop)
-│   │   └── open/
-│   │       └── page.tsx      # Tab launcher page
-│   ├── layout.tsx            # Root layout
-│   ├── page.tsx              # Landing page
-│   └── globals.css           # Global styles
-├── lib/
-│   ├── supabaseClient.ts     # Supabase client configuration
-│   ├── types.ts              # TypeScript type definitions
-│   └── utils.ts              # Utility functions (URL validation, etc.)
-├── supabase-schema.sql       # Database schema
-└── SETUP.md                  # Detailed setup instructions
-```
-
-## 🔒 Security Notes
-
-⚠️ **Important**: TabDrop is designed for public, collaborative use (similar to dontpad.com):
+**Important**: TabDrop is designed for public, collaborative use.
 
 - Anyone with the collection URL can view, add, or delete links
 - No authentication is required
 - Links are stored in plain text
 - **Do not** share sensitive or private URLs
 
-For private collections, you would need to implement Supabase authentication and update the RLS policies.
-
-## 🚢 Deployment
+## Deployment
 
 ### Vercel (Recommended)
 
@@ -114,11 +91,7 @@ TabDrop can be deployed to any platform that supports Next.js:
 
 Make sure to configure environment variables for your Supabase connection.
 
-## 📚 Detailed Setup
-
-See [SETUP.md](./SETUP.md) for detailed setup instructions, troubleshooting, and configuration options.
-
-## 🎯 Use Cases
+## Use Cases
 
 - **Research Projects** - Collect and organize research links
 - **Team Collaboration** - Share resources with team members
@@ -127,7 +100,7 @@ See [SETUP.md](./SETUP.md) for detailed setup instructions, troubleshooting, and
 - **Event Planning** - Share relevant links with attendees
 - **Learning Resources** - Curate educational content
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Pop-ups are blocked
 Allow pop-ups for your TabDrop domain in your browser settings.
@@ -141,15 +114,11 @@ Allow pop-ups for your TabDrop domain in your browser settings.
 - Check that the database table was created with proper RLS policies
 - Look for errors in the browser console and Network tab
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Feel free to open issues or submit pull requests.
 
-## 📄 License
-
-MIT License - feel free to use this project for personal or commercial purposes.
-
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Inspired by [Dontpad.com](https://dontpad.com)
 - Built with [Next.js](https://nextjs.org)
@@ -158,5 +127,3 @@ MIT License - feel free to use this project for personal or commercial purposes.
 - Icons by [Lucide](https://lucide.dev)
 
 ---
-
-**Made with ❤️ for the web**
