@@ -104,8 +104,7 @@ export default function SlugPage() {
   // Add a new link
   const addLink = async (url: string) => {
     if (!isValidUrl(url)) {
-      setError('Invalid URL. Please enter a valid http:// or https:// URL');
-      return;
+      url = 'https://' + url;
     }
 
     // Check for duplicates
