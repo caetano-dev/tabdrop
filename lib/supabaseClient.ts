@@ -8,3 +8,26 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+/**
+ * Delete all collections older than the specified number of months
+ * @param months - Number of months (e.g., 2 for 2 months)
+ * @returns The number of deleted records
+ */
+export async function deleteOldCollections(months: number = 2) {
+  const cutoffDate = new Date();
+  cutoffDate.setMonth(cutoffDate.getMonth() - months);
+  
+  const { data, error } = await supabase
+    .from('collections')
+    .delete()
+    .lt('created_at', cutoffDate.toISOString())
+    .select();
+  
+  if (error) {
+    console.error('Error deleting old collections:', error);
+    throw error;
+  }
+  
+  return data?.length || 0;
+}

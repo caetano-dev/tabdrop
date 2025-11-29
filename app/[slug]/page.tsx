@@ -188,7 +188,8 @@ export default function SlugPage() {
       <div className="mx-auto max-w-4xl">
         {/* Header */}
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold mb-2" style={{ color: 'var(--primary)' }}>
+          <h1 className="text-4xl font-bold mb-2" style={{ color: 'var(--primary)' }}
+            onClick={() => router.push(`/`)}>
             TabDrop
           </h1>
           <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>
@@ -227,7 +228,7 @@ export default function SlugPage() {
               Drop Links Here
             </h2>
             <p className="mb-6" style={{ color: 'var(--text-secondary)' }}>
-              Drag and drop browser tabs or links onto this area
+            Drag the lock icon 🔒 or search bar 🔎.
             </p>
 
             {/* Manual URL Input */}
@@ -257,6 +258,9 @@ export default function SlugPage() {
                 </button>
               </div>
             </form>
+            <p className="pt-2" style={{ color: 'var(--warning)' }}>
+            Links expire every 2 months.
+            </p>
           </div>
         </div>
 
