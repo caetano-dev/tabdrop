@@ -2,10 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { deleteOldCollections } from '@/lib/supabaseClient';
 
 export async function GET(request: NextRequest) {
-  // Verify the request is from Vercel Cron
   const authHeader = request.headers.get('authorization');
   
-  // Check if CRON_SECRET is set and matches
   if (process.env.CRON_SECRET) {
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
       return NextResponse.json(

@@ -44,9 +44,12 @@ Create a `.env.local` file in the root directory:
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+
+# Optional: Secure the cleanup cron endpoint
+CRON_SECRET=your-secret-key-here
 ```
 
-Get these values from your Supabase dashboard (Settings → API).
+Get these values from your Supabase dashboard (Settings → API). Generate `CRON_SECRET` with: `openssl rand -base64 32`
 
 ### 4. Run the Development Server
 
@@ -78,8 +81,10 @@ Open [http://localhost:3000](http://localhost:3000) to see the app in action!
 
 1. Push your code to GitHub
 2. Import the project in [Vercel](https://vercel.com)
-3. Add environment variables in the Vercel dashboard
+3. Add environment variables in the Vercel dashboard (including `CRON_SECRET`)
 4. Deploy!
+
+**Note**: Vercel automatically configures the cleanup cron job from `vercel.json` on production deployments.
 
 ### Other Platforms
 
@@ -90,6 +95,17 @@ TabDrop can be deployed to any platform that supports Next.js:
 - AWS Amplify
 
 Make sure to configure environment variables for your Supabase connection.
+
+## Automatic Cleanup
+
+TabDrop automatically deletes collections older than 2 months using Vercel Cron Jobs (runs daily at midnight UTC).
+
+**Configuration:**
+- Schedule: Edit `schedule` in `vercel.json` (default: `0 0 * * *`)
+- Age threshold: Edit `deleteOldCollections(2)` in `app/api/cron/cleanup/route.ts`
+- Manual test: `curl http://localhost:3000/api/cron/cleanup`
+
+See `CLEANUP_CRON_SETUP.md` for detailed documentation.
 
 ## Use Cases
 
