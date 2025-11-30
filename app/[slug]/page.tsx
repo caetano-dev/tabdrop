@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import { SavedLink } from '@/lib/types';
-import { isValidUrl, extractUrlFromDataTransfer, formatUrlForDisplay, getFaviconUrl } from '@/lib/utils';
+import { isValidUrl, extractUrlFromDataTransfer, formatUrlForDisplay, getFaviconUrl, getNumberOfMonthsToKeep } from '@/lib/utils';
 import { Trash2, ExternalLink, Plus, Rocket, Link as LinkIcon } from 'lucide-react';
 
 export default function SlugPage() {
@@ -228,7 +228,7 @@ export default function SlugPage() {
               Drop Links Here
             </h2>
             <p className="mb-6" style={{ color: 'var(--text-secondary)' }}>
-            Drag the lock icon 🔒 or search bar 🔎.
+            Drag the lock icon 🔒 or search bar 🔎
             </p>
 
             {/* Manual URL Input */}
@@ -259,7 +259,7 @@ export default function SlugPage() {
               </div>
             </form>
             <p className="pt-2" style={{ color: 'var(--warning)' }}>
-            Links expire every 2 months.
+            Links expire every {getNumberOfMonthsToKeep()} months
             </p>
           </div>
         </div>

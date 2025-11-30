@@ -45,3 +45,9 @@ export function getFaviconUrl(url: string): string {
     return '';
   }
 }
+
+export function getNumberOfMonthsToKeep(): number {
+  const monthsEnv = process.env.NEXT_PUBLIC_CLEANUP_MONTHS;
+  const months = monthsEnv ? parseInt(monthsEnv, 10) : 12;
+  return isNaN(months) || months <= 0 ? 12 : months;
+}

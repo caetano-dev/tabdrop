@@ -14,7 +14,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
  * @param months - Number of months (e.g., 2 for 2 months)
  * @returns The number of deleted records
  */
-export async function deleteOldCollections(months: number = 2) {
+export async function deleteOldCollections(months: number = 12) {
   const cutoffDate = new Date();
   cutoffDate.setMonth(cutoffDate.getMonth() - months);
   
