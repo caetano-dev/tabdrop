@@ -47,6 +47,9 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
 # Optional: Secure the cleanup cron endpoint
 CRON_SECRET=your-secret-key-here
+ 
+# Optional: Change expiration months for collections (default is 12)
+NEXT_PUBLIC_CLEANUP_MONTHS=12
 ```
 
 Get these values from your Supabase dashboard (Settings → API). Generate `CRON_SECRET` with: `openssl rand -base64 32`
@@ -98,14 +101,12 @@ Make sure to configure environment variables for your Supabase connection.
 
 ## Automatic Cleanup
 
-TabDrop automatically deletes collections older than 2 months using Vercel Cron Jobs (runs daily at midnight UTC).
+TabDrop automatically deletes collections older than an specified number of months using Vercel Cron Jobs (runs daily at midnight UTC). You can customize the age threshold in the Environment Variables.
 
 **Configuration:**
 - Schedule: Edit `schedule` in `vercel.json` (default: `0 0 * * *`)
 - Age threshold: Edit `deleteOldCollections(2)` in `app/api/cron/cleanup/route.ts`
 - Manual test: `curl http://localhost:3000/api/cron/cleanup`
-
-See `CLEANUP_CRON_SETUP.md` for detailed documentation.
 
 ## Use Cases
 
