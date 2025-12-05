@@ -1,3 +1,20 @@
+/**
+ * Fetches the page title from a URL using our API endpoint
+ */
+export async function fetchPageTitle(url: string): Promise<string | null> {
+  try {
+    const response = await fetch(`/api/fetch-title?url=${encodeURIComponent(url)}`);
+    if (!response.ok) {
+      return null;
+    }
+    const data = await response.json();
+    return data.title || null;
+  } catch (error) {
+    console.error('Error fetching page title:', error);
+    return null;
+  }
+}
+
 export function isValidUrl(urlString: string): boolean {
   try {
     const url = new URL(urlString);

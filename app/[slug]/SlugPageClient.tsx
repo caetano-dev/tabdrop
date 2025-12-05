@@ -4,8 +4,8 @@ import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import { SavedLink } from '@/lib/types';
-import { isValidUrl, extractUrlFromDataTransfer, formatUrlForDisplay, getFaviconUrl, getNumberOfMonthsToKeep } from '@/lib/utils';
-import { Trash2, ExternalLink, Plus, Link as LinkIcon } from 'lucide-react';
+import { isValidUrl, extractUrlFromDataTransfer, formatUrlForDisplay, getFaviconUrl, getNumberOfMonthsToKeep, fetchPageTitle } from '@/lib/utils';
+import { Trash2, ExternalLink, Plus, Link as LinkIcon, Loader2 } from 'lucide-react';
 
 interface SlugPageClientProps {
   slug: string;
@@ -20,6 +20,7 @@ export default function SlugPageClient({ slug }: SlugPageClientProps) {
   const [manualUrl, setManualUrl] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [addingLink, setAddingLink] = useState(false);
 
   // Fetch links on mount
   const fetchLinks = useCallback(async () => {
@@ -35,7 +36,7 @@ export default function SlugPageClient({ slug }: SlugPageClientProps) {
         console.error('Error fetching links:', error);
         setError('Failed to load links');
       }
-
+      data?.links?.sort((a: SavedLink, b: SavedLink) => new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime());
       setLinks(data?.links || []);
     } catch (err) {
       console.error('Error:', err);
@@ -103,7 +104,6 @@ export default function SlugPageClient({ slug }: SlugPageClientProps) {
     }
   };
 
-  // Add a new link
   const addLink = async (url: string) => {
     if (!isValidUrl(url)) {
       url = 'https://' + url;
@@ -115,20 +115,25 @@ export default function SlugPageClient({ slug }: SlugPageClientProps) {
       return;
     }
 
+    setAddingLink(true);
+    setError(null);
+
+    const title = await fetchPageTitle(url);
+
     const newLink: SavedLink = {
       url,
+      title: title || undefined,
       addedAt: new Date().toISOString(),
     };
 
     // Optimistic update
-    const updatedLinks = [...links, newLink];
+    const updatedLinks = [newLink, ...links];
     setLinks(updatedLinks);
-    setError(null);
     setSuccessMessage('Link added successfully!');
     setTimeout(() => setSuccessMessage(null), 3000);
 
-    // Persist to database
     await persistLinks(updatedLinks);
+    setAddingLink(false);
   };
 
   // Delete a link
@@ -140,11 +145,9 @@ export default function SlugPageClient({ slug }: SlugPageClientProps) {
     setSuccessMessage('Link removed!');
     setTimeout(() => setSuccessMessage(null), 3000);
 
-    // Persist to database
     await persistLinks(updatedLinks);
   };
 
-  // Drag and drop handlers
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragOver(true);
@@ -168,13 +171,19 @@ export default function SlugPageClient({ slug }: SlugPageClientProps) {
     }
   };
 
-  // Manual URL input handler
   const handleManualAdd = async (e: React.FormEvent) => {
     e.preventDefault();
     if (manualUrl.trim()) {
       await addLink(manualUrl.trim());
       setManualUrl('');
     }
+  };
+
+  const getLinkDisplayText = (link: SavedLink): string => {
+    if (link.title) {
+      return link.title;
+    }
+    return formatUrlForDisplay(link.url);
   };
 
   if (loading) {
@@ -244,7 +253,8 @@ export default function SlugPageClient({ slug }: SlugPageClientProps) {
                   value={manualUrl}
                   onChange={(e) => setManualUrl(e.target.value)}
                   placeholder="Or paste a URL here..."
-                  className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2"
+                  disabled={addingLink}
+                  className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 disabled:opacity-50"
                   style={{
                     backgroundColor: 'var(--surface)',
                     color: 'var(--text-primary)',
@@ -253,14 +263,19 @@ export default function SlugPageClient({ slug }: SlugPageClientProps) {
                 />
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+                  disabled={addingLink}
+                  className="px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 disabled:opacity-50"
                   style={{ backgroundColor: 'var(--primary)', color: 'white' }}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--primary-hover)'}
-                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--primary)'}
+                  onMouseEnter={(e) => !addingLink && (e.currentTarget.style.backgroundColor = 'var(--primary-hover)')}
+                  onMouseLeave={(e) => !addingLink && (e.currentTarget.style.backgroundColor = 'var(--primary)')}
                   aria-label="Add link"
                 >
-                  <Plus className="h-5 w-5" aria-hidden="true" />
-                  Add
+                  {addingLink ? (
+                    <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
+                  ) : (
+                    <Plus className="h-5 w-5" aria-hidden="true" />
+                  )}
+                  {addingLink ? 'Adding...' : 'Add'}
                 </button>
               </div>
             </form>
@@ -324,11 +339,16 @@ export default function SlugPageClient({ slug }: SlugPageClientProps) {
                       rel="noopener noreferrer"
                       className="font-medium truncate block hover:underline"
                       style={{ color: 'var(--primary)' }}
+                      title={link.url}
                     >
-                      {formatUrlForDisplay(link.url)}
+                      {getLinkDisplayText(link)}
                     </a>
-                    <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
-                      <time dateTime={link.addedAt}>Added {new Date(link.addedAt).toLocaleString()}</time>
+                    <p className="text-xs truncate" style={{ color: 'var(--text-tertiary)' }}>
+                      {link.title ? (
+                        <span>{formatUrlForDisplay(link.url)}</span>
+                      ) : (
+                        <time dateTime={link.addedAt}>Added {new Date(link.addedAt).toLocaleString()}</time>
+                      )}
                     </p>
                   </div>
 
@@ -343,7 +363,7 @@ export default function SlugPageClient({ slug }: SlugPageClientProps) {
                       onMouseEnter={(e) => e.currentTarget.style.color = 'var(--primary)'}
                       onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
                       title="Open in new tab"
-                      aria-label={`Open ${formatUrlForDisplay(link.url)} in new tab`}
+                      aria-label={`Open ${getLinkDisplayText(link)} in new tab`}
                     >
                       <ExternalLink className="h-5 w-5" aria-hidden="true" />
                     </a>
@@ -354,7 +374,7 @@ export default function SlugPageClient({ slug }: SlugPageClientProps) {
                       onMouseEnter={(e) => e.currentTarget.style.color = 'var(--error)'}
                       onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
                       title="Delete link"
-                      aria-label={`Delete ${formatUrlForDisplay(link.url)}`}
+                      aria-label={`Delete ${getLinkDisplayText(link)}`}
                     >
                       <Trash2 className="h-5 w-5" aria-hidden="true" />
                     </button>
