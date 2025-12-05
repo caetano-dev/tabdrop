@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import { SavedLink } from '@/lib/types';
-import { Rocket, ArrowLeft, ExternalLink, AlertCircle } from 'lucide-react';
+import { ArrowLeft, ExternalLink, AlertCircle } from 'lucide-react';
 
 export default function OpenPage() {
   const params = useParams();
@@ -104,9 +104,6 @@ export default function OpenPage() {
         <div className="rounded-2xl shadow-xl p-8 text-center" style={{ backgroundColor: 'var(--surface)' }}>
           {/* Header */}
           <div className="mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-4" style={{ backgroundColor: 'var(--primary-light)' }}>
-              <Rocket className="h-10 w-10" style={{ color: 'var(--primary)' }} />
-            </div>
             <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
               Launch Tabs
             </h1>
@@ -154,7 +151,6 @@ export default function OpenPage() {
               onMouseEnter={(e) => !opening && (e.currentTarget.style.backgroundColor = 'var(--primary-hover)')}
               onMouseLeave={(e) => !opening && (e.currentTarget.style.backgroundColor = 'var(--primary)')}
             >
-              <Rocket className="h-6 w-6" />
               {opening ? 'Opening Tabs...' : 'Open All Tabs'}
             </button>
           ) : (
