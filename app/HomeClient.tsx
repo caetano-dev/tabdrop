@@ -20,48 +20,38 @@ export default function HomeClient({ siteHost }: HomeClientProps) {
 
   return (
     <div className="max-w-md mx-auto mb-4 px-2">
-      <form 
-        onSubmit={handleSubmit} 
-        className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4"
+      <form
+        onSubmit={handleSubmit}
+        className="flex items-center border border-zinc-800 rounded-xl bg-zinc-900/50 px-3 py-2 w-full"
         aria-label="Create or access a collection"
       >
-        <div className="flex items-center gap-2 flex-1 min-w-0">
-          <span 
-            className="font-mono text-sm sm:text-lg whitespace-nowrap shrink-0"
-            style={{ color: 'var(--text-tertiary)' }}
-            aria-hidden="true"
-          >
-            {siteHost}/
-          </span>
-          <label htmlFor="collection-slug" className="sr-only">
-            Collection name
-          </label>
-          <input
-            id="collection-slug"
-            type="text"
-            value={slug}
-            onChange={(e) => setSlug(e.target.value)}
-            placeholder="your-collection"
-            className="flex-1 min-w-0 px-3 sm:px-4 py-3 sm:py-4 border-2 rounded-xl text-base sm:text-lg font-mono focus:outline-none focus:ring-2"
-            style={{ 
-              backgroundColor: 'var(--surface)',
-              color: 'var(--text-primary)',
-              borderColor: 'var(--border)',
-            }}
-            aria-describedby="slug-description"
-          />
-        </div>
+        <span className="text-zinc-500 pl-4 pr-1 select-none font-mono text-sm shrink-0" aria-hidden="true">
+          {siteHost}/
+        </span>
+
+        <label htmlFor="collection-slug" className="sr-only">
+          Collection name
+        </label>
+
+        <input
+          id="collection-slug"
+          type="text"
+          value={slug}
+          onChange={(e) => setSlug(e.target.value)}
+          placeholder="your-collection"
+          className="bg-transparent focus:ring-0 focus:outline-none text-white w-full px-3 py-2 placeholder:text-zinc-500 font-mono"
+          aria-describedby="slug-description"
+        />
+
         <button
           type="submit"
-          className="px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg transition-colors shadow-lg hover:shadow-xl whitespace-nowrap"
-          style={{ backgroundColor: 'var(--primary)', color: 'white' }}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--primary-hover)'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--primary)'}
+          className="ml-3 inline-flex items-center px-4 py-2 rounded-md bg-white text-black font-semibold hover:bg-zinc-200 transition-colors"
           aria-label="Go to collection"
         >
           Go
         </button>
       </form>
+
       <p id="slug-description" className="sr-only">
         Enter a collection name to create a new collection or access an existing one
       </p>

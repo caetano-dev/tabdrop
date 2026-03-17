@@ -1,102 +1,102 @@
 @import "tailwindcss";
 
 :root {
-  /* Base colors - Light Mode */
-  --background: #f8fafc;
-  --background-secondary: #f1f5f9;
-  --foreground: #0f172a;
-  --foreground-secondary: #475569;
-  
+  /* Global baseline - deep black background for production UI */
+  --background: #0A0A0A;
+  --background-secondary: #0A0A0A;
+  --foreground: #FFFFFF;
+  --foreground-secondary: #A1A1AA;
+
   /* Primary colors */
   --primary: #1e90ff;
   --primary-hover: #1e99ff;
   --primary-light: #eef2ff;
-  
-  /* Surface colors */
-  --surface: #ffffff;
-  --surface-hover: #f1f5f9;
-  --surface-active: #e2e8f0;
-  
+
+  /* Surface colors (glass-friendly) */
+  --surface: rgba(255,255,255,0.03);
+  --surface-hover: rgba(255,255,255,0.04);
+  --surface-active: rgba(255,255,255,0.05);
+
   /* Border colors */
-  --border: #cbd5e1;
-  --border-hover: #94a3b8;
-  
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(255,255,255,0.09);
+
   /* Status colors */
   --success: #16a34a;
   --success-bg: #dcfce7;
   --success-border: #86efac;
-  
+
   --error: #dc2626;
   --error-bg: #fee2e2;
   --error-border: #fca5a5;
-  
+
   --warning: #ea580c;
   --warning-bg: #fed7aa;
-  
+
   /* Text colors */
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
+  --text-primary: #FFFFFF; /* pure white */
+  --text-secondary: #a1a1aa; /* tailwind zinc-400 */
   --text-tertiary: #94a3b8;
-  
+
   /* Drop zone */
-  --dropzone-border: #cbd5e1;
-  --dropzone-bg: #ffffff;
-  --dropzone-hover-border: #4f46e5;
-  --dropzone-hover-bg: #eef2ff;
-  
-  /* Gradients */
-  --gradient-from: #f8fafc;
-  --gradient-to: #e2e8f0;
+  --dropzone-border: rgba(255,255,255,0.06);
+  --dropzone-bg: rgba(255,255,255,0.02);
+  --dropzone-hover-border: #6366f1;
+  --dropzone-hover-bg: rgba(49,46,129,0.08);
+
+  /* Gradients (kept dark) */
+  --gradient-from: #0A0A0A;
+  --gradient-to: #0A0A0A;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Base colors - Dark Mode */
-    --background: #0f172a;
-    --background-secondary: #1e293b;
-    --foreground: #f1f5f9;
-    --foreground-secondary: #cbd5e1;
-    
-    /* Primary colors (Indigo) */
+    /* Dark mode overrides - align with the same deep baseline */
+    --background: #0A0A0A;
+    --background-secondary: #0A0A0A;
+    --foreground: #FFFFFF;
+    --foreground-secondary: #a1a1aa;
+
+    /* Primary colors */
     --primary: #1e90ff;
     --primary-hover: #1e99ff;
     --primary-light: #4338ca;
-    
+
     /* Surface colors */
-    --surface: #1e293b;
-    --surface-hover: #334155;
-    --surface-active: #475569;
-    
+    --surface: rgba(255,255,255,0.03);
+    --surface-hover: rgba(255,255,255,0.04);
+    --surface-active: rgba(255,255,255,0.05);
+
     /* Border colors */
-    --border: #475569;
-    --border-hover: #64748b;
-    
+    --border: rgba(255,255,255,0.06);
+    --border-hover: rgba(255,255,255,0.09);
+
     /* Status colors */
     --success: #22c55e;
     --success-bg: #14532d;
     --success-border: #166534;
-    
+
     --error: #ef4444;
     --error-bg: #7f1d1d;
     --error-border: #991b1b;
-    
+
     --warning: #f97316;
     --warning-bg: #7c2d12;
-    
+
     /* Text colors */
-    --text-primary: #f1f5f9;
-    --text-secondary: #cbd5e1;
+    --text-primary: #FFFFFF;
+    --text-secondary: #a1a1aa;
     --text-tertiary: #64748b;
-    
+
     /* Drop zone */
-    --dropzone-border: #475569;
-    --dropzone-bg: rgba(30, 41, 59, 0.5);
+    --dropzone-border: rgba(255,255,255,0.06);
+    --dropzone-bg: rgba(255,255,255,0.02);
     --dropzone-hover-border: #6366f1;
-    --dropzone-hover-bg: rgba(49, 46, 129, 0.2);
-    
+    --dropzone-hover-bg: rgba(49,46,129,0.08);
+
     /* Gradients */
-    --gradient-from: #0f172a;
-    --gradient-to: #1e293b;
+    --gradient-from: #0A0A0A;
+    --gradient-to: #0A0A0A;
   }
 }
 
@@ -116,6 +116,16 @@ body {
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background);
+  background-image: radial-gradient(circle at 10% 10%, rgba(255,255,255,0.05), transparent 10%), radial-gradient(circle at 90% 85%, rgba(255,255,255,0.03), transparent 20%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--text-primary);
+}
+
+/* Tighten tracking for major headings */
+h1, h2 {
+  letter-spacing: -0.02em;
 }
 
 /* Add default margins for better spacing */
